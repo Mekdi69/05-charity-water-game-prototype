@@ -3,11 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Charity Water Game</title>
+    <title>Build a Well for Charity: Water</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Welcome to the Charity Water Game Prototype</h1>
+    <main class="app">
+        <div class="brand-row">
+            <img src="img/cw_logo_horizontal.png" alt="charity: water logo" class="brand-logo">
+        </div>
+        <h1>Build a Well for Charity: Water</h1>
+
+        <section id="start-screen" class="screen card">
+            <img src="img/cw_logo.png" alt="charity: water logo" class="section-logo">
+            <h2>Student Volunteer Mission</h2>
+            <p>
+                You are a student volunteer helping raise funds and plan a clean water project.
+                Make smart decisions across 3 stages to build a working, sustainable well.
+            </p>
+            <ul>
+                <li>Stage 1: Fundraising</li>
+                <li>Stage 2: Choosing a Well Site</li>
+                <li>Stage 3: Sustainable Building and Support</li>
+            </ul>
+            <button id="start-btn" type="button">Start Mission</button>
+        </section>
+
+        <section id="game-screen" class="screen card" aria-live="polite" hidden>
+            <div class="status-row" role="status">
+                <p><strong>Stage:</strong> <span id="stage-number">1</span> / <span id="total-stages">3</span></p>
+                <p><strong>Score:</strong> <span id="score">0</span></p>
+            </div>
+
+            <div class="progress-bar-wrap" aria-label="Game progress">
+                <div id="progress-bar" class="progress-bar"></div>
+            </div>
+
+            <div class="stage-card">
+                <img src="img/cw_logo.png" alt="charity: water watermark" class="card-watermark" aria-hidden="true">
+                <p id="stage-label" class="stage-label">Stage 1: Fundraising</p>
+                <p id="scenario-text" class="scenario-text">Scenario text appears here</p>
+                <h2 id="question-text">Question text appears here</h2>
+                <div id="choices" class="choices" aria-label="Decision choices"></div>
+            </div>
+
+            <p id="feedback" class="feedback"></p>
+
+            <button id="next-btn" type="button" hidden>Next Stage</button>
+        </section>
+
+        <section id="end-screen" class="screen card" hidden>
+            <img src="img/cw_logo.png" alt="charity: water logo" class="section-logo">
+            <h2 id="ending-title">Mission Complete</h2>
+            <p id="ending-message"></p>
+            <p><strong>Final Score:</strong> <span id="final-score">0</span></p>
+            <button id="restart-btn" type="button">Play Again</button>
+        </section>
+    </main>
+
     <script src="script.js"></script>
 </body>
 </html>
