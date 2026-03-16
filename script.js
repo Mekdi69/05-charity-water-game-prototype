@@ -1,84 +1,92 @@
-// This array stores the 3 decision stages for the game.
-// Each stage has a title, a prompt, choices, and a short learning message.
-const gameStages = [
+// Each stage has a title, a short mission context, and action cards.
+// Every action changes one or more resources.
+const missionStages = [
 	{
-		stageTitle: 'Stage 1: Fundraising',
-		scenario: 'Your college volunteer club has one month and a small budget to raise support for a village water well project.',
-		prompt: 'Which fundraising approach is most effective and responsible?',
-		choices: [
+		label: 'Stage 1: Fundraising',
+		title: 'How will your team raise support?',
+		description: 'You need funds and momentum. Choose one strategy for your first month of outreach.',
+		actions: [
 			{
-				text: 'Plan a large party, spend most of the budget on decorations, and share very little project information',
-				points: -3,
-				goodChoice: false,
-				message: 'This is a weak strategy. High event costs and low transparency reduce trust and limit long-term support for clean water projects.'
+				name: 'Campus Fundraiser Event',
+				details: 'Host a student event with clear project storytelling and donation stations.',
+				effects: { budget: 20, time: -10, energy: -8, trust: 12 },
+				feedback: 'Strong event turnout boosts funds and trust, but your team gets tired and loses time.'
 			},
 			{
-				text: 'Run a low-cost campus campaign with clear impact facts, student stories, and regular donation updates',
-				points: 5,
-				goodChoice: true,
-				message: 'Great decision. This combines fundraising with education and transparency, which usually leads to stronger and more sustainable support.'
+				name: 'Social Media Campaign',
+				details: 'Run short videos, impact posts, and donation updates for four weeks.',
+				effects: { budget: 12, time: -6, energy: -5, trust: 8 },
+				feedback: 'Digital storytelling helps both fundraising and awareness with moderate effort.'
 			},
 			{
-				text: 'Post one generic donation link and stop communication after launch day',
-				points: -1,
-				goodChoice: false,
-				message: 'This has limited impact. Without ongoing communication, many supporters do not understand where money goes or why the project matters.'
+				name: 'Club Partnership Drive',
+				details: 'Partner with three campus clubs to share volunteer workload and outreach.',
+				effects: { budget: 15, time: -8, energy: 6, trust: 10 },
+				feedback: 'Teamwork improves reach and keeps energy steadier because responsibilities are shared.'
 			}
 		]
 	},
 	{
-		stageTitle: 'Stage 2: Choosing a Well Site',
-		scenario: 'Your team can support one village this year. Engineers shared site notes on water need, flood risk, and road access.',
-		prompt: 'Which site is the safest and most practical choice?',
-		choices: [
+		label: 'Stage 2: Site Selection',
+		title: 'Which village site will you support?',
+		description: 'Balance need, safety, and cost. Choosing the wrong site can hurt long-term outcomes.',
+		actions: [
 			{
-				text: 'Village A: easy delivery route, but most households already have nearby safe water',
-				points: 0,
-				goodChoice: false,
-				message: 'Not the strongest choice. Logistics are good, but need is lower, so this does not maximize impact for limited resources.'
+				name: 'Village A (Low Cost, Lower Need)',
+				details: 'Road access is easy and drilling cost is low, but current water need is moderate.',
+				effects: { budget: -10, time: -4, energy: -3, trust: 2 },
+				feedback: 'This is affordable, but impact is smaller because water access is already somewhat stable.'
 			},
 			{
-				text: 'Village B: high need, stable ground, low flood risk, and a local water committee ready to help',
-				points: 5,
-				goodChoice: true,
-				message: 'Excellent site selection. It balances urgent need, engineering safety, and local involvement, which improves reliability.'
+				name: 'Village B (Balanced Choice)',
+				details: 'High need, safer terrain, and local committee support for maintenance.',
+				effects: { budget: -14, time: -6, energy: -4, trust: 14 },
+				feedback: 'Balanced planning improves trust and creates a strong foundation for sustainability.'
 			},
 			{
-				text: 'Village C: very high need but frequent flooding and no current local operations partner',
-				points: -2,
-				goodChoice: false,
-				message: 'High need is important, but flood risk and missing local support create major failure risk without a stronger implementation plan.'
+				name: 'Village C (High Need, High Risk)',
+				details: 'Need is very high, but flood risk and transport costs are also high.',
+				effects: { budget: -20, time: -12, energy: -10, trust: 6 },
+				feedback: 'Need is urgent, but high risk drains resources quickly and adds implementation stress.'
 			}
 		]
 	},
 	{
-		stageTitle: 'Stage 3: Sustainable Build and Support',
-		scenario: 'Funding is approved and the site is selected. Your final decision determines whether the well works for years or fails quickly.',
-		prompt: 'Which implementation plan gives the best long-term sustainability?',
-		choices: [
+		label: 'Stage 3: Build Plan',
+		title: 'How will you spend your build budget?',
+		description: 'Pick one project plan for drilling, materials, sanitation, and training.',
+		actions: [
 			{
-				text: 'Finish construction quickly, then leave without local training, spare parts, or maintenance budget',
-				points: -3,
-				goodChoice: false,
-				message: 'This is risky. A well can fail fast when no one is trained to repair pumps or manage maintenance costs.'
+				name: 'Fast Build, Minimal Training',
+				details: 'Prioritize speed and skip technician training to save money.',
+				effects: { budget: -8, time: 4, energy: -2, trust: -18 },
+				feedback: 'Quick results look good at first, but missing training can reduce long-term well reliability.'
 			},
 			{
-				text: 'Build with quality materials, train local technicians, test water quality, and set up a community maintenance fund',
-				points: 5,
-				goodChoice: true,
-				message: 'Best choice. Long-term success depends on quality construction, local ownership, ongoing maintenance, and safe water monitoring.'
+				name: 'Balanced Sustainable Build',
+				details: 'Invest in quality drilling, sanitation, and local maintenance training.',
+				effects: { budget: -18, time: -8, energy: -6, trust: 20 },
+				feedback: 'This plan is resource-heavy now, but it strongly increases long-term success.'
 			},
 			{
-				text: 'Cut costs with cheaper materials and delay water quality testing until next year',
-				points: -2,
-				goodChoice: false,
-				message: 'This saves money now but can create health and reliability problems later. Safe water projects require quality and monitoring.'
+				name: 'Low-Cost Materials Plan',
+				details: 'Use cheaper materials and delay some sanitation steps.',
+				effects: { budget: -5, time: -3, energy: 2, trust: -14 },
+				feedback: 'Money and energy are saved now, but trust drops because reliability and safety are weaker.'
 			}
 		]
 	}
 ];
 
-// Grab elements from the page so we can update them during gameplay.
+// Starting resource values.
+const initialResources = {
+	budget: 60,
+	time: 70,
+	energy: 65,
+	trust: 55
+};
+
+// Page references.
 const startScreen = document.getElementById('start-screen');
 const gameScreen = document.getElementById('game-screen');
 const endScreen = document.getElementById('end-screen');
@@ -86,141 +94,327 @@ const endScreen = document.getElementById('end-screen');
 const startBtn = document.getElementById('start-btn');
 const nextBtn = document.getElementById('next-btn');
 const restartBtn = document.getElementById('restart-btn');
+const difficultyInputs = document.querySelectorAll('input[name="difficulty"]');
 
-const stageNumberEl = document.getElementById('stage-number');
-const totalStagesEl = document.getElementById('total-stages');
-const scoreEl = document.getElementById('score');
-const progressBarEl = document.getElementById('progress-bar');
+const stageCounterEl = document.getElementById('stage-counter');
+const difficultyLabelEl = document.getElementById('difficulty-label');
+const trackerLineEl = document.getElementById('tracker-line');
+const trackerSteps = document.querySelectorAll('.tracker-step');
+
+const budgetValueEl = document.getElementById('budget-value');
+const timeValueEl = document.getElementById('time-value');
+const energyValueEl = document.getElementById('energy-value');
+const trustValueEl = document.getElementById('trust-value');
+
+const budgetBarEl = document.getElementById('budget-bar');
+const timeBarEl = document.getElementById('time-bar');
+const energyBarEl = document.getElementById('energy-bar');
+const trustBarEl = document.getElementById('trust-bar');
+
 const stageLabelEl = document.getElementById('stage-label');
-const scenarioTextEl = document.getElementById('scenario-text');
-const questionTextEl = document.getElementById('question-text');
-const choicesEl = document.getElementById('choices');
+const stageTitleEl = document.getElementById('stage-title');
+const stageDescriptionEl = document.getElementById('stage-description');
+const actionsEl = document.getElementById('actions');
 const feedbackEl = document.getElementById('feedback');
 
 const endingTitleEl = document.getElementById('ending-title');
 const endingMessageEl = document.getElementById('ending-message');
-const finalScoreEl = document.getElementById('final-score');
+const endingStatsEl = document.getElementById('ending-stats');
 
-// Game state values.
+// Game state.
+let resources = { ...initialResources };
 let currentStageIndex = 0;
-let score = 0;
-let hasAnsweredCurrentStage = false;
+let hasChosenAction = false;
+let missionEndedEarly = false;
+let selectedDifficulty = 'normal';
 
-totalStagesEl.textContent = gameStages.length;
+startBtn.addEventListener('click', startMission);
+nextBtn.addEventListener('click', goToNextStage);
+restartBtn.addEventListener('click', startMission);
 
-// Start the game from stage 1.
-startBtn.addEventListener('click', () => {
+// Reset values and open the mission dashboard.
+function startMission() {
+	selectedDifficulty = getSelectedDifficulty();
+	difficultyLabelEl.textContent = `Difficulty: ${formatDifficulty(selectedDifficulty)}`;
+	difficultyLabelEl.classList.remove('easy', 'normal', 'hard');
+	difficultyLabelEl.classList.add(selectedDifficulty);
+	resources = { ...initialResources };
+	currentStageIndex = 0;
+	hasChosenAction = false;
+	missionEndedEarly = false;
+
 	startScreen.hidden = true;
 	endScreen.hidden = true;
 	gameScreen.hidden = false;
-
-	currentStageIndex = 0;
-	score = 0;
-	hasAnsweredCurrentStage = false;
-
-	scoreEl.textContent = score;
 	nextBtn.hidden = true;
 
-	showStage();
-});
-
-// Move to the next stage, or finish the game.
-nextBtn.addEventListener('click', () => {
-	currentStageIndex += 1;
-	hasAnsweredCurrentStage = false;
-	nextBtn.hidden = true;
-
-	if (currentStageIndex < gameStages.length) {
-		showStage();
-	} else {
-		showEndingScreen();
-	}
-});
-
-// Play again button starts a fresh run.
-restartBtn.addEventListener('click', () => {
-	startBtn.click();
-});
-
-// Render the current stage and its decision buttons.
-function showStage() {
-	const currentStage = gameStages[currentStageIndex];
-	stageNumberEl.textContent = currentStageIndex + 1;
-	stageLabelEl.textContent = currentStage.stageTitle;
-	scenarioTextEl.textContent = currentStage.scenario;
-	questionTextEl.textContent = currentStage.prompt;
-	feedbackEl.textContent = 'Choose one option to continue your mission.';
-	choicesEl.innerHTML = '';
-
-	updateProgressBar();
-
-	currentStage.choices.forEach((choice) => {
-		const choiceButton = document.createElement('button');
-		choiceButton.type = 'button';
-		choiceButton.className = 'choice-btn';
-		choiceButton.textContent = choice.text;
-
-		choiceButton.addEventListener('click', () => {
-			handleChoice(choice, choiceButton);
-		});
-
-		choicesEl.appendChild(choiceButton);
-	});
+	feedbackEl.textContent = 'Choose one action to continue your mission.';
+	updateResourceUI();
+	renderStage();
 }
 
-// Process the selected choice, update score, and explain the result.
-function handleChoice(choice, clickedButton) {
-	if (hasAnsweredCurrentStage) {
+// Render stage content. Stage 4 is the outcome summary stage.
+function renderStage() {
+	if (currentStageIndex >= missionStages.length) {
+		renderOutcomeStage();
 		return;
 	}
 
-	hasAnsweredCurrentStage = true;
-	score += choice.points;
-	scoreEl.textContent = score;
+	const stage = missionStages[currentStageIndex];
+	hasChosenAction = false;
+	nextBtn.hidden = true;
 
-	const allButtons = document.querySelectorAll('.choice-btn');
-	allButtons.forEach((button) => {
-		button.disabled = true;
+	stageCounterEl.textContent = `Stage ${currentStageIndex + 1} of 4`;
+	stageLabelEl.textContent = stage.label;
+	stageTitleEl.textContent = stage.title;
+	stageDescriptionEl.textContent = stage.description;
+	feedbackEl.textContent = 'Pick one action card. Each choice changes your resources.';
+
+	actionsEl.innerHTML = '';
+	stage.actions.forEach((action) => {
+		const actionBtn = document.createElement('button');
+		actionBtn.type = 'button';
+		actionBtn.className = 'action-btn';
+		actionBtn.innerHTML = `<strong>${action.name}</strong><span>${action.details}</span>`;
+
+		actionBtn.addEventListener('click', () => {
+			handleActionChoice(action, actionBtn);
+		});
+
+		actionsEl.appendChild(actionBtn);
 	});
 
-	if (choice.goodChoice) {
-		clickedButton.classList.add('good');
-	} else {
-		clickedButton.classList.add('poor');
+	updateProgressTracker();
+}
+
+// Apply resource changes and show immediate feedback.
+function handleActionChoice(action, selectedButton) {
+	if (hasChosenAction) {
+		return;
 	}
 
-	// Also highlight the strongest option for learning support.
-	allButtons.forEach((button, index) => {
-		if (gameStages[currentStageIndex].choices[index].goodChoice) {
-			button.classList.add('good');
-		}
-	});
+	hasChosenAction = true;
+	const adjustedEffects = getAdjustedEffects(action.effects);
+	applyEffects(adjustedEffects);
+	updateResourceUI();
 
-	const pointsText = choice.points >= 0 ? `+${choice.points}` : `${choice.points}`;
-	feedbackEl.textContent = `${choice.message} (${pointsText} points)`;
+	const allActionButtons = document.querySelectorAll('.action-btn');
+	allActionButtons.forEach((button) => {
+		button.disabled = true;
+	});
+	selectedButton.classList.add('selected');
+
+	feedbackEl.textContent = `${action.feedback} ${buildEffectText(adjustedEffects)}`;
+
+	if (isMissionCollapsed()) {
+		missionEndedEarly = true;
+		showFinalScreen();
+		return;
+	}
+
+	nextBtn.textContent = currentStageIndex === missionStages.length - 1 ? 'View Outcome Stage' : 'Next Stage';
 	nextBtn.hidden = false;
 }
 
-// Update progress bar width based on current stage.
-function updateProgressBar() {
-	const progressPercent = ((currentStageIndex + 1) / gameStages.length) * 100;
-	progressBarEl.style.width = `${progressPercent}%`;
+// Move to the next stage.
+function goToNextStage() {
+	currentStageIndex += 1;
+	renderStage();
 }
 
-// Show final outcome based on total score.
-function showEndingScreen() {
+// Show stage 4 summary before the final ending screen.
+function renderOutcomeStage() {
+	stageCounterEl.textContent = 'Stage 4 of 4';
+	stageLabelEl.textContent = 'Stage 4: Outcome';
+	stageTitleEl.textContent = 'Mission outcome based on your resource balance';
+
+	const status = evaluateMissionStatus();
+	stageDescriptionEl.textContent = status.description;
+	actionsEl.innerHTML = '';
+	feedbackEl.textContent = 'You can review your mission result, then open the final report.';
+
+	nextBtn.textContent = 'Open Final Report';
+	nextBtn.hidden = false;
+	nextBtn.onclick = showFinalScreen;
+
+	updateProgressTracker();
+}
+
+// Final ending screen with replay button.
+function showFinalScreen() {
+	const status = evaluateMissionStatus();
+
 	gameScreen.hidden = true;
 	endScreen.hidden = false;
-	finalScoreEl.textContent = score;
+	nextBtn.onclick = goToNextStage;
 
-	if (score >= 10) {
-		endingTitleEl.textContent = 'Success: Working Well Built!';
-		endingMessageEl.textContent = 'Your team used smart planning, local involvement, and sustainable support. The village now has a reliable working well.';
-	} else if (score >= 5) {
-		endingTitleEl.textContent = 'Partial Success: Well Built with Risks';
-		endingMessageEl.textContent = 'You made progress, but some decisions increased long-term risk. Strong projects need planning, local partnership, and sustainability.';
-	} else {
-		endingTitleEl.textContent = 'Mission Incomplete';
-		endingMessageEl.textContent = 'The well plan was not sustainable enough. Try again and focus on practical decisions, community support, and long-term reliability.';
+	endingTitleEl.textContent = status.title;
+	endingMessageEl.textContent = status.description;
+	endingStatsEl.innerHTML = `
+		<li>Budget remaining: ${resources.budget}</li>
+		<li>Time remaining: ${resources.time}</li>
+		<li>Team energy: ${resources.energy}</li>
+		<li>Community trust: ${resources.trust}</li>
+	`;
+}
+
+// Convert effects object into readable text.
+function buildEffectText(effects) {
+	const keys = ['budget', 'time', 'energy', 'trust'];
+	const labels = {
+		budget: 'Budget',
+		time: 'Time',
+		energy: 'Energy',
+		trust: 'Trust'
+	};
+
+	const parts = keys.map((key) => {
+		const amount = effects[key];
+		const prefix = amount >= 0 ? '+' : '';
+		return `${labels[key]} ${prefix}${amount}`;
+	});
+
+	return `Resource changes: ${parts.join(', ')}.`;
+}
+
+function getSelectedDifficulty() {
+	let choice = 'normal';
+
+	difficultyInputs.forEach((input) => {
+		if (input.checked) {
+			choice = input.value;
+		}
+	});
+
+	return choice;
+}
+
+function formatDifficulty(value) {
+	if (value === 'easy') {
+		return 'Easy';
 	}
+
+	if (value === 'hard') {
+		return 'Hard';
+	}
+
+	return 'Normal';
+}
+
+function getAdjustedEffects(baseEffects) {
+	const adjusted = {};
+	const keys = ['budget', 'time', 'energy', 'trust'];
+
+	keys.forEach((key) => {
+		const value = baseEffects[key];
+		adjusted[key] = scaleByDifficulty(value);
+	});
+
+	return adjusted;
+}
+
+function scaleByDifficulty(value) {
+	if (selectedDifficulty === 'normal') {
+		return value;
+	}
+
+	if (selectedDifficulty === 'easy') {
+		if (value > 0) {
+			return Math.round(value * 1.2);
+		}
+
+		if (value < 0) {
+			return Math.round(value * 0.8);
+		}
+
+		return 0;
+	}
+
+	if (value > 0) {
+		return Math.round(value * 0.8);
+	}
+
+	if (value < 0) {
+		return Math.round(value * 1.2);
+	}
+
+	return 0;
+}
+
+// Keep values between 0 and 100 so bars stay valid.
+function applyEffects(effects) {
+	resources.budget = clampValue(resources.budget + effects.budget);
+	resources.time = clampValue(resources.time + effects.time);
+	resources.energy = clampValue(resources.energy + effects.energy);
+	resources.trust = clampValue(resources.trust + effects.trust);
+}
+
+function clampValue(value) {
+	if (value < 0) {
+		return 0;
+	}
+
+	if (value > 100) {
+		return 100;
+	}
+
+	return value;
+}
+
+// Update number counters and animated bar widths.
+function updateResourceUI() {
+	budgetValueEl.textContent = resources.budget;
+	timeValueEl.textContent = resources.time;
+	energyValueEl.textContent = resources.energy;
+	trustValueEl.textContent = resources.trust;
+
+	budgetBarEl.style.width = `${resources.budget}%`;
+	timeBarEl.style.width = `${resources.time}%`;
+	energyBarEl.style.width = `${resources.energy}%`;
+	trustBarEl.style.width = `${resources.trust}%`;
+}
+
+// Update progress tracker circles and line fill.
+function updateProgressTracker() {
+	trackerSteps.forEach((step, index) => {
+		step.classList.remove('done', 'active');
+
+		if (index < currentStageIndex) {
+			step.classList.add('done');
+		} else if (index === currentStageIndex) {
+			step.classList.add('active');
+		}
+	});
+
+	const linePercent = (currentStageIndex / 3) * 100;
+	trackerLineEl.style.background = `linear-gradient(to right, #4FCB53 ${linePercent}%, #eaf2fb ${linePercent}%)`;
+}
+
+// If any key resource hits zero, the mission cannot continue safely.
+function isMissionCollapsed() {
+	return resources.budget === 0 || resources.time === 0 || resources.energy === 0 || resources.trust === 0;
+}
+
+// Decide mission result from final resource values.
+function evaluateMissionStatus() {
+	const total = resources.budget + resources.time + resources.energy + resources.trust;
+
+	if (missionEndedEarly || total < 160 || resources.trust < 35) {
+		return {
+			title: 'Mission Failed: Project Not Sustainable',
+			description: 'The project ran out of critical support before long-term stability was secured. Replay and protect trust, time, and team energy.'
+		};
+	}
+
+	if (total < 240 || resources.trust < 55) {
+		return {
+			title: 'Partial Success: Well Built with Risks',
+			description: 'A well was built, but weaker resource balance may cause future maintenance challenges. Better planning can improve reliability.'
+		};
+	}
+
+	return {
+		title: 'Sustainable Success: Reliable Water Access',
+		description: 'Your decisions balanced budget, time, energy, and trust. The village has a stronger chance of long-term clean water access.'
+	};
 }

@@ -8,55 +8,99 @@
 </head>
 <body>
     <main class="app">
-        <div class="brand-row">
+        <header class="top-bar card">
             <img src="img/cw_logo_horizontal.png" alt="charity: water logo" class="brand-logo">
-        </div>
-        <h1>Build a Well for Charity: Water</h1>
+            <h1>Build a Well for Charity: Water</h1>
+        </header>
 
         <section id="start-screen" class="screen card">
             <img src="img/cw_logo.png" alt="charity: water logo" class="section-logo">
-            <h2>Student Volunteer Mission</h2>
+            <h2>Student Volunteer Mission Simulation</h2>
             <p>
-                You are a student volunteer helping raise funds and plan a clean water project.
-                Make smart decisions across 3 stages to build a working, sustainable well.
+                You are a college volunteer leading a village clean water project.
+                Balance resources across each stage to deliver a sustainable well.
             </p>
-            <ul>
-                <li>Stage 1: Fundraising</li>
-                <li>Stage 2: Choosing a Well Site</li>
-                <li>Stage 3: Sustainable Building and Support</li>
+            <ul class="stage-list">
+                <li>1) Fundraising</li>
+                <li>2) Site Selection</li>
+                <li>3) Build Plan</li>
+                <li>4) Outcome</li>
             </ul>
+            <fieldset class="difficulty-wrap">
+                <legend>Difficulty</legend>
+                <label><input type="radio" name="difficulty" value="easy"> Easy</label>
+                <label><input type="radio" name="difficulty" value="normal" checked> Normal</label>
+                <label><input type="radio" name="difficulty" value="hard"> Hard</label>
+            </fieldset>
             <button id="start-btn" type="button">Start Mission</button>
         </section>
 
-        <section id="game-screen" class="screen card" aria-live="polite" hidden>
-            <div class="status-row" role="status">
-                <p><strong>Stage:</strong> <span id="stage-number">1</span> / <span id="total-stages">3</span></p>
-                <p><strong>Score:</strong> <span id="score">0</span></p>
-            </div>
+        <section id="game-screen" class="screen" hidden>
+            <section class="dashboard card" aria-label="Mission dashboard">
+                <div class="dashboard-header">
+                    <h2>Mission Dashboard</h2>
+                    <div>
+                        <p id="stage-counter">Stage 1 of 4</p>
+                        <p id="difficulty-label">Difficulty: Normal</p>
+                    </div>
+                </div>
 
-            <div class="progress-bar-wrap" aria-label="Game progress">
-                <div id="progress-bar" class="progress-bar"></div>
-            </div>
+                <div class="resources-grid" role="status" aria-live="polite">
+                    <article class="resource-card budget">
+                        <p class="resource-title">Budget</p>
+                        <p class="resource-value"><span id="budget-value">60</span> / 100</p>
+                        <div class="resource-track"><div id="budget-bar" class="resource-fill"></div></div>
+                    </article>
 
-            <div class="stage-card">
-                <img src="img/cw_logo.png" alt="charity: water watermark" class="card-watermark" aria-hidden="true">
+                    <article class="resource-card time">
+                        <p class="resource-title">Time</p>
+                        <p class="resource-value"><span id="time-value">70</span> / 100</p>
+                        <div class="resource-track"><div id="time-bar" class="resource-fill"></div></div>
+                    </article>
+
+                    <article class="resource-card energy">
+                        <p class="resource-title">Team Energy</p>
+                        <p class="resource-value"><span id="energy-value">65</span> / 100</p>
+                        <div class="resource-track"><div id="energy-bar" class="resource-fill"></div></div>
+                    </article>
+
+                    <article class="resource-card trust">
+                        <p class="resource-title">Community Trust</p>
+                        <p class="resource-value"><span id="trust-value">55</span> / 100</p>
+                        <div class="resource-track"><div id="trust-bar" class="resource-fill"></div></div>
+                    </article>
+                </div>
+
+                <div class="progress-wrap" aria-label="Stage progress tracker">
+                    <div id="tracker-line" class="tracker-line"></div>
+                    <div class="tracker-steps">
+                        <div class="tracker-step" data-step="0">Fundraising</div>
+                        <div class="tracker-step" data-step="1">Site</div>
+                        <div class="tracker-step" data-step="2">Build</div>
+                        <div class="tracker-step" data-step="3">Outcome</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mission card" aria-live="polite">
+                <img src="img/cw_logo.png" alt="charity: water watermark" class="mission-watermark" aria-hidden="true">
                 <p id="stage-label" class="stage-label">Stage 1: Fundraising</p>
-                <p id="scenario-text" class="scenario-text">Scenario text appears here</p>
-                <h2 id="question-text">Question text appears here</h2>
-                <div id="choices" class="choices" aria-label="Decision choices"></div>
-            </div>
+                <h3 id="stage-title">Pick your first move</h3>
+                <p id="stage-description" class="stage-description"></p>
 
-            <p id="feedback" class="feedback"></p>
+                <div id="actions" class="actions" aria-label="Action choices"></div>
 
-            <button id="next-btn" type="button" hidden>Next Stage</button>
+                <div id="feedback" class="feedback">Choose one action to continue your mission.</div>
+                <button id="next-btn" type="button" hidden>Next Stage</button>
+            </section>
         </section>
 
         <section id="end-screen" class="screen card" hidden>
             <img src="img/cw_logo.png" alt="charity: water logo" class="section-logo">
             <h2 id="ending-title">Mission Complete</h2>
             <p id="ending-message"></p>
-            <p><strong>Final Score:</strong> <span id="final-score">0</span></p>
-            <button id="restart-btn" type="button">Play Again</button>
+            <ul id="ending-stats" class="ending-stats"></ul>
+            <button id="restart-btn" type="button">Replay Mission</button>
         </section>
     </main>
 
