@@ -301,6 +301,50 @@ p {
 	margin-bottom: 12px;
 }
 
+.stage-visual {
+	border: 2px dashed #b8d3ef;
+	border-radius: 12px;
+	padding: 14px;
+	background: linear-gradient(180deg, #ffffff, #f7fbff);
+	margin-bottom: 14px;
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
+
+.stage-icon {
+	font-size: 2.3rem;
+	line-height: 1;
+	animation: icon-bob 1.6s ease-in-out infinite;
+}
+
+.stage-visual h4 {
+	margin: 0 0 4px;
+	font-size: 1rem;
+}
+
+.stage-visual p {
+	margin: 0;
+	font-size: 0.92rem;
+	color: #34495e;
+}
+
+.final-visual {
+	margin-bottom: 12px;
+}
+
+@keyframes icon-bob {
+	0% {
+		transform: translateY(0px);
+	}
+	50% {
+		transform: translateY(-3px);
+	}
+	100% {
+		transform: translateY(0px);
+	}
+}
+
 .actions {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));

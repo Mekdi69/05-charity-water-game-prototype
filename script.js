@@ -5,6 +5,11 @@ const missionStages = [
 		label: 'Stage 1: Fundraising',
 		title: 'How will your team raise support?',
 		description: 'You need funds and momentum. Choose one strategy for your first month of outreach.',
+		visual: {
+			icon: '💵',
+			title: 'Fundraising Picture',
+			description: 'Donation jar filling up with money as students support clean water.'
+		},
 		actions: [
 			{
 				name: 'Campus Fundraiser Event',
@@ -30,6 +35,11 @@ const missionStages = [
 		label: 'Stage 2: Site Selection',
 		title: 'Which village site will you support?',
 		description: 'Balance need, safety, and cost. Choosing the wrong site can hurt long-term outcomes.',
+		visual: {
+			icon: '🗺️',
+			title: 'Village Map Picture',
+			description: 'Map pins highlight village options while your team studies safe terrain.'
+		},
 		actions: [
 			{
 				name: 'Village A (Low Cost, Lower Need)',
@@ -55,6 +65,11 @@ const missionStages = [
 		label: 'Stage 3: Build Plan',
 		title: 'How will you spend your build budget?',
 		description: 'Pick one project plan for drilling, materials, sanitation, and training.',
+		visual: {
+			icon: '🏗️',
+			title: 'Construction Picture',
+			description: 'A well is under construction with tools, drilling, and volunteer teamwork.'
+		},
 		actions: [
 			{
 				name: 'Fast Build, Minimal Training',
@@ -114,12 +129,14 @@ const trustBarEl = document.getElementById('trust-bar');
 const stageLabelEl = document.getElementById('stage-label');
 const stageTitleEl = document.getElementById('stage-title');
 const stageDescriptionEl = document.getElementById('stage-description');
+const stageVisualEl = document.getElementById('stage-visual');
 const actionsEl = document.getElementById('actions');
 const feedbackEl = document.getElementById('feedback');
 
 const endingTitleEl = document.getElementById('ending-title');
 const endingMessageEl = document.getElementById('ending-message');
 const endingStatsEl = document.getElementById('ending-stats');
+const endingVisualEl = document.getElementById('ending-visual');
 
 // Game state.
 let resources = { ...initialResources };
@@ -168,6 +185,7 @@ function renderStage() {
 	stageLabelEl.textContent = stage.label;
 	stageTitleEl.textContent = stage.title;
 	stageDescriptionEl.textContent = stage.description;
+	setStageVisual(stage.visual);
 	feedbackEl.textContent = 'Pick one action card. Each choice changes your resources.';
 
 	actionsEl.innerHTML = '';
@@ -227,6 +245,11 @@ function renderOutcomeStage() {
 	stageCounterEl.textContent = 'Stage 4 of 4';
 	stageLabelEl.textContent = 'Stage 4: Outcome';
 	stageTitleEl.textContent = 'Mission outcome based on your resource balance';
+	setStageVisual({
+		icon: '🚰',
+		title: 'Finished Well Picture',
+		description: 'The completed water well is ready to provide clean water to the village.'
+	});
 
 	const status = evaluateMissionStatus();
 	stageDescriptionEl.textContent = status.description;
@@ -250,11 +273,29 @@ function showFinalScreen() {
 
 	endingTitleEl.textContent = status.title;
 	endingMessageEl.textContent = status.description;
+	endingVisualEl.innerHTML = `
+		<div class="stage-icon" aria-hidden="true">🚰</div>
+		<div>
+			<h4>Finished Water Well Picture</h4>
+			<p>The project goal is a safe, working well that the community can maintain.</p>
+		</div>
+	`;
 	endingStatsEl.innerHTML = `
 		<li>Budget remaining: ${resources.budget}</li>
 		<li>Time remaining: ${resources.time}</li>
 		<li>Team energy: ${resources.energy}</li>
 		<li>Community trust: ${resources.trust}</li>
+	`;
+}
+
+// Show a visual card for each stage so students can see the mission story.
+function setStageVisual(visual) {
+	stageVisualEl.innerHTML = `
+		<div class="stage-icon" aria-hidden="true">${visual.icon}</div>
+		<div>
+			<h4>${visual.title}</h4>
+			<p>${visual.description}</p>
+		</div>
 	`;
 }
 
